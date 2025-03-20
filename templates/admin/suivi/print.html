@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impression de cours</title>
+    <style type="text/css">
+        /* Styles généraux */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-print {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            max-width: 150px;
+            margin-bottom: 10px;
+        }
+        
+        .info-cours, .info-enseignant, .info-suivi {
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        .print-button {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .footer-print {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+        }
+        
+        /* Styles spécifiques pour l'impression */
+        @media print {
+            body {
+                font-size: 12pt;
+                color: #000;
+                background-color: #fff;
+            }
+        
+            .no-print {
+                display: none;
+            }
+        
+            .print-only {
+                display: block;
+            }
+        
+            header, footer, aside, nav, form, .header, .sidebar, .footer {
+                display: none;
+            }
+        
+            .container {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+            }
+        
+            /* Évite de couper un cours entre deux pages */
+            .cours-container {
+                page-break-inside: avoid;
+            }
+        
+            /* Ajoute une marge en haut de chaque nouvelle page */
+            @page {
+                margin-top: 2cm;
+            }
+        
+            /* Évite de couper les lignes d'un tableau */
+            table {
+                page-break-inside: auto;
+            }
+        
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+        
+            .table td, .table th {
+                border: 1px solid #000;
+            }
+        
+            .btn {
+                display: none;
+            }
+            td {
+                font-size: 14px;
+                text-align: center;
+            }
+            
+            .status-yes {
+                color: green;
+            }
+            
+            .status-no {
+                color: red;
+            }
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Boutons d'action -->
+        <div class="no-print print-button">
+            <button onclick="window.print()" class="btn btn-primary">Imprimer</button>
+            <button onclick="window.history.back()" class="btn btn-secondary">Retour</button>
+        </div>
+
+        <!-- En-tête avec logo et titre -->
+        <div class="header-print">
+            <img src="http://127.0.0.1:8000/static/logo.jpeg" alt="Logo Université" class="logo"> <!-- Remplacez par l'URL de votre logo -->
+            <h2>UNIVERSITÉ NANGUI ABROGOUA</h2>
+            <p>FICHE DE SUIVIS</p>
+            <p>Date d'impression: {{ today|date:"d/m/Y" }}</p>
+        </div>
+
+           <!-- Section Suivi -->
+    <div class="info-suivi">
+        <h3>Suivi des cours</h3>
+        {% for suivi in suivi_list %}
+        <div class="suivi-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Enseignant</th>
+                        <th>Parcours</th>
+                        <th>Niveau d'étude</th>
+                        <th>Semestre</th>
+                        <th>Intitulé du cours</th>
+                        <th>Date du cours</th>
+                        <th>Horaire début</th>
+                        <th>Horaire fin</th>
+                        <th>Total heures cumulées</th>
+                        <th>Statut émargement</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ suivi.enseignant.user.last_name }} {{ suivi.enseignant.user.first_name }}</td>
+                        <td>{{ suivi.cours.parcours }}</td>
+                        <td>{{ suivi.cours.niveau.libelle_niveau }}</td>
+                        <td>{{ suivi.cours.semestre.libelle_semestre }}</td>
+                        <td>{{ suivi.cours.code_cours }} - {{ suivi.cours.intitule_ue }}</td>
+                        <td>{{ suivi.date_cours }}</td>
+                        <td>{{ suivi.horaire_debut }}</td>
+                        <td>{{ suivi.horaire_fin }}</td>
+                        <td>{{ suivi.total_heures_cumulees }}</td>
+                        <td>{{ suivi.status_emargement }}</td>
+
+                        
+                        
+                    </tr>
+                </tbody>
+            </table>
+            <hr> <!-- Séparation entre les suivis -->
+        </div>
+        {% empty %}
+        <p>Aucun suivi de cours à afficher.</p>
+        {% endfor %}
+    </div>
+
+        <!-- Pied de page -->
+        <div class="footer-print">
+            <p>&copy; 2025 Université Nangui Abrogoua - Tous droits réservés</p>
+        </div>
+    </div>
+</body>
+</html>
