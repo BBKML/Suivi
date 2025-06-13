@@ -11,12 +11,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Sécurité : secret key en variable d'environnement
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'change-this-secret-key-in-production')
 
-# Mode développement (à désactiver en production)
-DEBUG = True
 
-# Hôtes autorisés (mettre le domaine en production)
-ALLOWED_HOSTS = []
+DEBUG = True  # Pour les tests
 
+ALLOWED_HOSTS = ['.onrender.com']
 # Modèle utilisateur personnalisé
 AUTH_USER_MODEL = 'Suiv.CustomUser'
 
