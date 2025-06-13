@@ -47,3 +47,4 @@ webencodings==0.5.1
 whitenoise==6.9.0
 xhtml2pdf==0.2.17
 zopfli==0.2.3.post1
+gunicorn==20.1.0
