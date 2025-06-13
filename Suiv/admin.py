@@ -2,6 +2,7 @@
 from django.contrib import admin
 from django.http import HttpResponse
 import csv
+from django.core.exceptions import PermissionDenied
 from django.utils.safestring import mark_safe
 from django.contrib.auth.admin import UserAdmin
 from django.shortcuts import redirect, render, get_object_or_404
@@ -10,18 +11,18 @@ from django.utils.html import format_html
 from django.contrib import messages
 from django.utils import timezone
 from django.db.models import Sum
+from django.contrib.auth import get_user_model
+
 from django.core.exceptions import ValidationError
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django import forms
-
-# Utilisation d'importations absolues (remplacez 'app_name' par le nom réel de votre application)
 from Suiv.models import (
     CustomUser, Grade, Statut, AnneeAcademique, Enseignant, 
     NiveauEtude, Semestre, Salle, Cours, SuiviEnseignement, Enseigner, GroupeEtudiant
 )
 
-# Configuration du site admin
+User = get_user_model()
 admin.site.site_header = "UNA"
 admin.site.site_title = "Administration du site"
 admin.site.index_title = "Bienvenue sur le tableau de bord"
@@ -131,6 +132,7 @@ class StatutAdmin(admin.ModelAdmin):
 
 @admin.register(AnneeAcademique)
 class AnneeAcademiqueAdmin(admin.ModelAdmin):
+   
     list_display = ("annee", "get_enseignants_count", "get_suivis_count")
     search_fields = ("annee",)
     list_per_page = 5
@@ -231,7 +233,7 @@ class CoursAdmin(PrintableMixin, admin.ModelAdmin):
                 cours.total_heures
             ])
         return response
-    exporter_cours_csv.short_description = "Exporter les cours sélectionnés en CSV"
+    exporter_cours_csv.short_description = "Exporter les cours en CSV"
 
     def imprimer_selection_cours(self, request, queryset):
         """Imprimer les cours sélectionnés."""
@@ -314,6 +316,9 @@ class EnseignantAdmin(PrintableMixin, admin.ModelAdmin):
         }
         return render(request, 'admin/enseignant/print.html', context)
     imprimer_selection_enseignants.short_description = "Imprimer les enseignants sélectionnés"
+
+
+
 class SuiviEnseignementBaseMixin:
     """Mixin de base pour les classes de SuiviEnseignement"""
     
@@ -362,10 +367,13 @@ class SuiviEnseignementBaseMixin:
     def save_form(self, request, form, change):
         obj = form.save(commit=False)
         
-        # Vérifier si l'enseignant est associé au cours avant de sauvegarder
+        # Assigner automatiquement l'enseignant connecté
         if not request.user.is_superuser and hasattr(request.user, 'enseignant'):
-            enseignant = request.user.enseignant
-            if obj.cours and not Enseigner.objects.filter(enseignant=enseignant, cours=obj.cours).exists():
+            obj.enseignant = request.user.enseignant
+        
+        # Vérifier si l'enseignant est associé au cours avant de sauvegarder
+        if not request.user.is_superuser and obj.cours:
+            if not Enseigner.objects.filter(enseignant=obj.enseignant, cours=obj.cours).exists():
                 form.add_error('cours', "Vous n'êtes pas autorisé à créer un suivi pour ce cours.")
                 return form.save(commit=False)
         
@@ -385,7 +393,7 @@ class SuiviEnseignementDynamicAdmin(SuiviEnseignementBaseMixin, admin.ModelAdmin
     list_per_page = 15
     ordering = ('-date_cours',)
     actions = ['exporter_suivi_csv', 'imprimer_selection_suivis']
-    readonly_fields = ['total_heures_cumulees', 'annee_academique']
+    readonly_fields = ['annee_academique']
     list_display_enseignant = (
         'cours', 'date_cours', 'horaire_debut', 'horaire_fin', 
         'heures_cm', 'heures_td', 'heures_tp', 'total_heures_cumulees','status_emargement'
@@ -426,7 +434,7 @@ class SuiviEnseignementDynamicAdmin(SuiviEnseignementBaseMixin, admin.ModelAdmin
     get_enseignant.short_description = "Enseignant"
 
     def status_emargement(self, obj):
-        return format_html('<span style="color: green;">✔</span>' if obj.emargement_delegue else '<span style="color: red;">✘</span>')
+        return format_html('<span style="color: green;">OUI</span>' if obj.emargement_delegue else '<span style="color: red;">NON</span>')
     status_emargement.short_description = "Émargement"
 
     def get_parcours(self, obj):
@@ -444,6 +452,15 @@ class SuiviEnseignementDynamicAdmin(SuiviEnseignementBaseMixin, admin.ModelAdmin
     def get_intitule_cours(self, obj):
         return f"{obj.cours.code_cours} - {obj.cours.intitule_ue}"
     get_intitule_cours.short_description = "Cours"
+    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "enseignant":
+            # Si l'utilisateur connecté est un enseignant, on remplit automatiquement le champ et le cache
+            if hasattr(request.user, 'enseignant') and not request.user.is_superuser:
+                kwargs["queryset"] = Enseignant.objects.filter(id=request.user.enseignant.id)
+                kwargs["initial"] = request.user.enseignant
+                kwargs["widget"] = forms.HiddenInput()  # Cache le champ
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def has_delete_permission(self, request, obj=None):
         """Empêche la suppression si l'émargement du délégué est validé"""
@@ -456,12 +473,14 @@ class SuiviEnseignementDynamicAdmin(SuiviEnseignementBaseMixin, admin.ModelAdmin
     def save_model(self, request, obj, form, change):
         """Sauvegarde du modèle avec des vérifications supplémentaires"""
         if not obj.enseignant and hasattr(request.user, 'enseignant'):
-            obj.enseignant = request.user.enseignant
-
+            obj.enseignant = request.user.enseignant  # Assigner l'enseignant connecté
+        
+        # Vérifier que l'enseignant est associé au cours
         if not request.user.is_superuser and obj.enseignant and obj.cours:
             if not Enseigner.objects.filter(enseignant=obj.enseignant, cours=obj.cours).exists():
                 raise ValidationError("Vous n'êtes pas autorisé à créer un suivi pour ce cours.")
-
+        
+        # Assignation de l'année académique si elle est vide
         if not obj.annee_academique or obj.annee_academique == '':
             obj.annee_academique = str(timezone.now().year)
 
@@ -493,7 +512,6 @@ class SuiviEnseignementDynamicAdmin(SuiviEnseignementBaseMixin, admin.ModelAdmin
         ])
 
         for suivi in queryset:
-
             writer.writerow([
                 suivi.cours.intitule_ue,
                 suivi.date_cours,
@@ -509,7 +527,6 @@ class SuiviEnseignementDynamicAdmin(SuiviEnseignementBaseMixin, admin.ModelAdmin
         return response
 
     exporter_suivi_csv.short_description = "Exporter les suivis sélectionnés en CSV"
-
 @admin.register(GroupeEtudiant)
 class GroupeEtudiantAdmin(admin.ModelAdmin):
     list_display = ('nom_groupe', 'niveau', 'parcours', 'effectif')
@@ -527,3 +544,13 @@ class EnseignerAdmin(admin.ModelAdmin):
     search_fields = ('enseignant__user__last_name', 'enseignant__user__first_name', 'cours__code_cours', 'cours__intitule_ue')
     list_filter = ('cours__niveau', 'cours__semestre', 'enseignant__grade', 'enseignant__statut')
     autocomplete_fields = ('enseignant', 'cours')
+
+
+from .models import Notification
+
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ('user', 'message', 'created_at', 'read')
+    list_filter = ('read',)
+    search_fields = ('message',)
+
+

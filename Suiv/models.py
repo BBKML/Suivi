@@ -8,6 +8,11 @@ from django.db import models
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
+
+from django.utils import timezone
+
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -66,61 +71,8 @@ class Statut(models.Model):
         verbose_name_plural = "Statuts"
 
 # Table Année Académique
-class AnneeAcademique(models.Model):
-    annee = models.CharField(max_length=10)
-    class Meta:
-            verbose_name = "Année académique"
-            verbose_name_plural = "Années académiques"
+
    
-User = get_user_model()
-
-class Enseignant(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='enseignant', null=True, blank=True)
-    genre = models.CharField(max_length=1, choices=[('M', 'Masculin'), ('F', 'Féminin'), ('A', 'Autre')], null=True, blank=True)
-    matricule = models.CharField(
-        max_length=50,
-        unique=True,
-        verbose_name="Matricule",
-        help_text="Identifiant unique de l'enseignant",
-    )
-    grade = models.ForeignKey('Grade', on_delete=models.CASCADE, verbose_name="Grade", related_name="enseignants")
-    statut = models.ForeignKey('Statut', on_delete=models.CASCADE, verbose_name="Statut", related_name="enseignants")
-    structure_origine = models.CharField(
-        max_length=255, blank=True, null=True, verbose_name="Structure d'origine"
-    )
-    contact = models.CharField(
-        max_length=20,
-        unique=True,
-        verbose_name="Contact",
-        help_text="Format : '+999999999'. Jusqu'à 15 chiffres.",
-        validators=[
-            RegexValidator(
-                regex=r"^\+?1?\d{9,15}$",
-                message="Le format du numéro de contact est invalide."
-            )
-        ],
-    )
-    
-    class Meta:
-        verbose_name = "Enseignant"
-        verbose_name_plural = "Enseignants"
-
-    @property
-    def nom(self):
-        return self.user.last_name if self.user else ""
-
-    @property
-    def prenom(self):
-        return self.user.first_name if self.user else ""
-
-    @property
-    def email(self):
-        return self.user.email if self.user else ""
-
-    def __str__(self):
-        return f"{self.nom} {self.prenom}"
-
-
 # Table Niveau d'étude
 class NiveauEtude(models.Model):
     libelle_niveau = models.CharField(max_length=100,unique=True, verbose_name="Libellé du niveau")
@@ -194,6 +146,59 @@ class Cours(models.Model):
         verbose_name = "Cours"
         verbose_name_plural = "Cours"
 
+        
+
+User = get_user_model() 
+
+class Enseignant(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='enseignant', null=True, blank=True)
+    genre = models.CharField(max_length=1, choices=[('M', 'Masculin'), ('F', 'Féminin'), ('A', 'Autre')], null=True, blank=True)
+    matricule = models.CharField(
+        max_length=50,
+        unique=True,
+        verbose_name="Matricule",
+        help_text="Identifiant unique de l'enseignant",
+    )
+    cours = models.ManyToManyField(Cours, related_name="enseignants", blank=True)
+    grade = models.ForeignKey('Grade', on_delete=models.CASCADE, verbose_name="Grade", related_name="enseignants")
+    statut = models.ForeignKey('Statut', on_delete=models.CASCADE, verbose_name="Statut", related_name="enseignants")
+    structure_origine = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Structure d'origine"
+    )
+    contact = models.CharField(
+        max_length=20,
+        unique=True,
+        verbose_name="Contact",
+        help_text="Format : '+999999999'. Jusqu'à 15 chiffres.",
+        validators=[
+            RegexValidator(
+                regex=r"^\+?1?\d{9,15}$",
+                message="Le format du numéro de contact est invalide."
+            )
+        ],
+    )
+    
+    class Meta:
+        verbose_name = "Enseignant"
+        verbose_name_plural = "Enseignants"
+
+    @property
+    def nom(self):
+        return self.user.last_name if self.user else ""
+
+    @property
+    def prenom(self):
+        return self.user.first_name if self.user else ""
+
+    @property
+    def email(self):
+        return self.user.email if self.user else ""
+
+    def __str__(self):
+        return f"{self.nom} {self.prenom}"
+
+
+
 class GroupeEtudiant(models.Model):
     nom_groupe = models.CharField(max_length=100, verbose_name="Nom du groupe")
     niveau = models.ForeignKey(NiveauEtude, on_delete=models.CASCADE, verbose_name="Niveau d'étude")
@@ -209,13 +214,7 @@ class GroupeEtudiant(models.Model):
             models.UniqueConstraint(fields=['nom_groupe', 'niveau', 'parcours'], name='unique_groupe_niveau_parcours')
         ]
 
-from django.contrib.auth.models import User
 
-from django.contrib.auth import get_user_model
-from django.utils import timezone
-
-from django.core.exceptions import ValidationError
-from django.db import models
 
 class SuiviEnseignement(models.Model):
     cours = models.ForeignKey(Cours, on_delete=models.CASCADE, verbose_name="Cours", related_name="suivis")
@@ -233,18 +232,20 @@ class SuiviEnseignement(models.Model):
     annee_academique = models.CharField(max_length=4, default=str(timezone.now().year))
     
     def status_emargement(self):
-       return "✔" if self.emargement_delegue else "✘"
+       return "Oui" if self.emargement_delegue else "Non"
 
     # Reste du code inchangé...
 
     def clean(self):
-        """ Validation des valeurs avant l'enregistrement """
+        """Validation des valeurs avant l'enregistrement."""
+        if not self.enseignant:
+            raise ValidationError("L'enseignant doit être renseigné.")
         if any(h < 0 for h in [self.heures_cm, self.heures_td, self.heures_tp]):
             raise ValidationError("Les heures ne peuvent pas être négatives.")
-            
-        # Ajouter une validation pour horaire_debut et horaire_fin
         if self.horaire_debut and self.horaire_fin and self.horaire_debut >= self.horaire_fin:
             raise ValidationError("L'heure de fin doit être postérieure à l'heure de début.")
+
+    
     def save(self, *args, **kwargs):
         """ Sauvegarde avec validation des données """
         self.clean()  # Appelle clean() avant de sauvegarder
@@ -263,3 +264,20 @@ class SuiviEnseignement(models.Model):
 
 
 
+class AnneeAcademique(models.Model):
+    annee = models.CharField(max_length=10)
+    enseignants = models.ManyToManyField(Enseignant, related_name="annees_academiques", blank=True)
+    suivis = models.ManyToManyField(SuiviEnseignement, related_name="annees_academiques", blank=True)
+    class Meta:
+            verbose_name = "Année académique"
+            verbose_name_plural = "Années académiques"
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Notification for {self.user.username}: {self.message}"

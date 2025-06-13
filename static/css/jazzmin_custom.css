@@ -6,153 +6,76 @@
 
 .sidebar-menu .nav-link:hover i {
     transform: scale(1.2);
+    color: #f39c12 !important; /* Couleur dorée au survol */
 }
 
 /* 🌟 Couleur spécifique pour chaque icône */
-.model-auth-user i {
-    color: #a31544 !important; /* Bleu */
-}
-
-.model-auth-group i {
-    color: #9b59b6 !important; /* Violet */
-}
-
-.model-Suiv-CustomUser i {
-    color: #e67e22 !important; /* Orange */
-}
-
-.model-Suiv-Grade i {
-    color: #1abc9c !important; /* Vert émeraude */
-}
-
-.model-Suiv-Salle i {
-    color: #2c3e50 !important; /* Gris foncé */
-}
-
-.model-Suiv-Statut i {
-    color: #27ae60 !important; /* Vert */
-}
-
-.model-Suiv-AnneeAcademique i {
-    color: #f1c40f !important; /* Jaune */
-}
-
-.model-Suiv-Enseignant i {
-    color: #e74c3c !important; /* Rouge */
-}
-
-.model-Suiv-NiveauEtude i {
-    color: #8e44ad !important; /* Violet foncé */
-}
-
-.model-Suiv-Semestre i {
-    color: #16a085 !important; /* Vert océan */
-}
-
-.model-Suiv-Cours i {
-    color: #2980b9 !important; /* Bleu foncé */
-}
-
-.model-Suiv-SuiviEnseignement i {
-    color: #d35400 !important; /* Orange foncé */
-}
-
-.model-Suiv-Enseigner i {
-    color: #c0392b !important; /* Rouge sombre */
-}
+.model-auth-user i { color: #2980b9 !important; } /* Bleu */
+.model-auth-group i { color: #9b59b6 !important; } /* Violet */
+.model-Suiv-CustomUser i { color: #e67e22 !important; } /* Orange */
+.model-Suiv-Grade i { color: #1abc9c !important; } /* Vert émeraude */
+.model-Suiv-Salle i { color: #2c3e50 !important; } /* Gris foncé */
+.model-Suiv-Statut i { color: #27ae60 !important; } /* Vert */
+.model-Suiv-AnneeAcademique i { color: #f1c40f !important; } /* Jaune */
+.model-Suiv-Enseignant i { color: #e74c3c !important; } /* Rouge */
+.model-Suiv-NiveauEtude i { color: #8e44ad !important; } /* Violet foncé */
+.model-Suiv-Semestre i { color: #16a085 !important; } /* Vert océan */
+.model-Suiv-Cours i { color: #2980b9 !important; } /* Bleu foncé */
+.model-Suiv-SuiviEnseignement i { color: #d35400 !important; } /* Orange foncé */
+.model-Suiv-Enseigner i { color: #c0392b !important; } /* Rouge sombre */
 
 /* 🔹 Amélioration du menu de gauche */
 .sidebar {
-    background: linear-gradient(to bottom, #2c3e50, #1a252f) !important; /* Dégradé élégant */
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2) !important; /* Ombre */
+    background: rgba(44, 62, 80, 0.85) !important; /* Effet Glassmorphism */
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2) !important;
 }
 
 .sidebar-menu .nav-link {
-    color: #ecf0f1 !important; /* Texte blanc */
-    border-left: 3px solid transparent; /* Bordure latérale invisible par défaut */
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-    margin-bottom: 2px; /* Espacement entre les éléments */
-    padding: 10px 15px !important; /* Padding amélioré */
+    color: #ecf0f1 !important;
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 2px;
+    padding: 12px 18px !important;
 }
 
 .sidebar-menu .nav-link:hover {
-    background-color: #34495e !important; /* Bleu foncé */
-    border-left: 3px solid #3498db !important; /* Bordure bleue au survol */
+    background-color: #34495e !important;
+    border-left: 3px solid #3498db !important;
+    transform: translateX(3px);
 }
 
 .sidebar-menu .nav-link.active {
-    background-color: #34495e !important; /* Bleu foncé pour l'élément actif */
-    border-left: 3px solid #3498db !important; /* Bordure bleue pour l'élément actif */
+    background-color: #34495e !important;
+    border-left: 3px solid #3498db !important;
     font-weight: bold;
 }
 
 /* ✅ Amélioration du header */
 .navbar {
-    background: linear-gradient(to right, #2980b9, #3498db) !important; /* Dégradé bleu */
+    background: linear-gradient(to right, #2980b9, #3498db) !important;
     color: white !important;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important; /* Ombre subtile */
-}
-
-.navbar .nav-link {
-    color: white !important;
-    transition: all 0.3s ease;
-    position: relative;
-    padding: 15px 15px !important; /* Padding amélioré */
-}
-
-.navbar .nav-link:hover {
-    color: #ecf0f1 !important; /* Blanc cassé */
-}
-
-.navbar .nav-link:after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: #ecf0f1;
-    transition: width 0.3s;
-}
-
-.navbar .nav-link:hover:after {
-    width: 100%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* 📌 Style des boutons */
 .btn {
-    border-radius: 5px !important;
-    font-weight: 500 !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
-    transition: all 0.3s ease !important;
-    padding: 8px 20px !important;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease-in-out !important;
+    padding: 10px 25px !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) !important;
 }
 
 .btn:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
-}
-
-.btn-primary {
-    background: linear-gradient(to right, #3498db, #2980b9) !important; /* Dégradé bleu */
-    border: none !important;
-}
-
-.btn-danger {
-    background: linear-gradient(to right, #e74c3c, #c0392b) !important; /* Dégradé rouge */
-    border: none !important;
-}
-
-.btn-success {
-    background: linear-gradient(to right, #2ecc71, #27ae60) !important; /* Dégradé vert */
-    border: none !important;
+    transform: translateY(-3px) scale(1.05) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* 📑 Amélioration des tableaux */
 .table {
-    background-color: #fff !important; /* Fond blanc */
+    background-color: #fff !important;
     color: #2c3e50 !important;
     border-radius: 8px !important;
     overflow: hidden !important;
@@ -161,137 +84,19 @@
     border-spacing: 0 !important;
 }
 
-.table thead th {
-    background-color: #34495e !important; /* Bleu foncé */
-    color: white !important;
-    padding: 15px !important;
-    font-weight: 500 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
-    border-bottom: none !important;
-}
-
-.table tbody tr {
-    transition: background-color 0.3s ease !important;
-}
-
-.table tbody tr:hover {
-    background-color: #f8f9fa !important; /* Gris très clair au survol */
-}
-
-.table tbody td {
-    padding: 12px 15px !important;
-    border-top: 1px solid #ecf0f1 !important;
-    vertical-align: middle !important;
-}
-
 /* 🎨 Amélioration des formulaires */
 input, select, textarea {
-    border-radius: 5px !important;
+    border-radius: 6px !important;
     border: 1px solid #bdc3c7 !important;
-    padding: 10px 15px !important;
+    padding: 12px 18px !important;
     transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
     background-color: #f8f9fa !important;
 }
 
 input:focus, select:focus, textarea:focus {
     border-color: #3498db !important;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2) !important;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.3) !important;
     outline: none !important;
-}
-
-/* Étiquettes des formulaires */
-label {
-    font-weight: 500 !important;
-    color: #2c3e50 !important;
-    margin-bottom: 8px !important;
-}
-
-/* 🔍 Amélioration des listes déroulantes */
-select {
-    appearance: none !important;
-    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232c3e50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
-    background-repeat: no-repeat !important;
-    background-position: right 10px center !important;
-    padding-right: 30px !important;
-}
-
-/* 🎯 Amélioration des cartes */
-.card {
-    border-radius: 8px !important;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05) !important;
-    border: none !important;
-    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
-}
-
-.card:hover {
-    transform: translateY(-5px) !important;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
-}
-
-.card-header {
-    background-color: #f8f9fa !important;
-    border-bottom: 1px solid #ecf0f1 !important;
-    padding: 15px 20px !important;
-    font-weight: 600 !important;
-}
-
-.card-body {
-    padding: 20px !important;
-}
-
-/* 📝 Amélioration des onglets */
-.nav-tabs {
-    border-bottom: 1px solid #ecf0f1 !important;
-}
-
-.nav-tabs .nav-link {
-    border: none !important;
-    color: #7f8c8d !important;
-    padding: 10px 20px !important;
-    font-weight: 500 !important;
-    transition: color 0.3s ease, border-color 0.3s ease !important;
-}
-
-.nav-tabs .nav-link:hover {
-    color: #3498db !important;
-    border-bottom: 2px solid #3498db !important;
-}
-
-.nav-tabs .nav-link.active {
-    color: #3498db !important;
-    background-color: transparent !important;
-    border-bottom: 2px solid #3498db !important;
-    font-weight: 600 !important;
-}
-
-/* 🖌️ Amélioration des messages d'alerte */
-.alert {
-    border: none !important;
-    border-radius: 8px !important;
-    padding: 15px 20px !important;
-    margin-bottom: 20px !important;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05) !important;
-}
-
-.alert-success {
-    background-color: #2ecc71 !important;
-    color: white !important;
-}
-
-.alert-danger {
-    background-color: #e74c3c !important;
-    color: white !important;
-}
-
-.alert-warning {
-    background-color: #f39c12 !important;
-    color: white !important;
-}
-
-.alert-info {
-    background-color: #3498db !important;
-    color: white !important;
 }
 
 /* 🔄 Animation de chargement personnalisée */
@@ -301,13 +106,26 @@ select {
     border-radius: 50% !important;
     width: 30px !important;
     height: 30px !important;
-    animation: spin 1s linear infinite !important;
+    animation: spin 0.8s linear infinite !important;
 }
 
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* 🖌️ Amélioration des messages d'alerte */
+.alert {
+    border-radius: 8px !important;
+    padding: 15px 20px !important;
+    margin-bottom: 20px !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05) !important;
+}
+
+.alert-success { background-color: #2ecc71 !important; color: white !important; }
+.alert-danger { background-color: #e74c3c !important; color: white !important; }
+.alert-warning { background-color: #f39c12 !important; color: white !important; }
+.alert-info { background-color: #3498db !important; color: white !important; }
 
 /* 📱 Responsive design amélioré */
 @media (max-width: 768px) {
@@ -321,14 +139,14 @@ select {
     }
 
     .table thead th {
-        padding: 10px !important;
+        padding: 12px !important;
     }
 
     .table tbody td {
-        padding: 8px 10px !important;
+        padding: 10px 12px !important;
     }
 
     .btn {
-        padding: 6px 15px !important;
+        padding: 8px 20px !important;
     }
 }

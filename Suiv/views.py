@@ -41,3 +41,17 @@ def print_enseignants_view(request):
 
     context = {'enseignants_page': enseignants_page}
     return render(request, 'admin/Suiv/enseignant/print_paginated.html', context)
+
+
+from django.contrib.admin.views.decorators import staff_member_required
+from django.shortcuts import render
+from .models import Notification
+
+from django.shortcuts import redirect
+
+@staff_member_required
+def mark_as_read(request, notification_id):
+    notification = Notification.objects.get(id=notification_id)
+    notification.read = True
+    notification.save()
+    return redirect('/admin/notifications/')  # Redirige vers la page des notifications

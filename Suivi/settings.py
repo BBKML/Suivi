@@ -94,6 +94,10 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [BASE_DIR / 'static'] if (BASE_DIR / 'static').exists() else []
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
+
 
 # Configuration des fichiers médias
 MEDIA_URL = '/media/'
@@ -149,6 +153,7 @@ JAZZMIN_SETTINGS = {
     "search_model": "Suiv.SuiviEnseignement",
     "copyright": "Mon Site",
     "language_chooser": True,
+  
     "custom_links": {
         "Suiv.SuiviEnseignement": [
             {
@@ -186,6 +191,7 @@ JAZZMIN_SETTINGS = {
         "Suiv.AnneeAcademique": "fas fa-calendar-alt",
         "Suiv.Enseignant": "fas fa-chalkboard-teacher",
         "Suiv.NiveauEtude": "fas fa-layer-group",
+        "Suiv.GroupeEtudiant":"fas fa-users",
         "Suiv.Semestre": "fas fa-calendar",
         "Suiv.Cours": "fas fa-book",
         "Suiv.SuiviEnseignement": "fas fa-clipboard-list",
@@ -197,7 +203,7 @@ JAZZMIN_SETTINGS = {
 
 JAZZMIN_UI_TWEAKS = {
     "theme": "simplex",
-    "custom_css":"css/jazzmin_custom.css",
+    "custom_css": "static/css/jazzmin_custom.css",
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
