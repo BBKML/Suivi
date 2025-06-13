@@ -3,15 +3,16 @@ from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Enseignant, Notification, SuiviEnseignement
+from .models import Enseignant, Notification, SuiviEnseignement, Grade
 
 User = get_user_model()
 
 @receiver(post_save, sender=User)
 def create_enseignant_for_user(sender, instance, created, **kwargs):
-    if created:
-        Enseignant.objects.create(user=instance)
-
+    if created and not instance.is_superuser:
+        # Obtenir un grade par défaut (tu peux adapter ici selon tes besoins)
+        grade_defaut = Grade.objects.first()  # ou get(nom='Assistant') si tu veux un grade précis
+        Enseignant.objects.create(user=instance, grade=grade_defaut)
 
 @receiver(post_save, sender=SuiviEnseignement)
 def notifier_admin_suivi_ajoute(sender, instance, created, **kwargs):
