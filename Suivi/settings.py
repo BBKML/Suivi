@@ -12,10 +12,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Sécurité : secret key en variable d'environnement
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'change-this-secret-key-in-production')
 
-
-DEBUG = True  # Pour les tests
+DEBUG = False  # Mettre à True uniquement en développement
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.onrender.com']
+
 # Modèle utilisateur personnalisé
 AUTH_USER_MODEL = 'Suiv.CustomUser'
 
@@ -28,14 +28,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Suiv',  # Ton application principale
+    'Suiv',  # Application principale
     'widget_tweaks',
 ]
 
 # Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    #'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -46,12 +46,12 @@ MIDDLEWARE = [
 ]
 
 # Fichiers de templates
-ROOT_URLCONF = 'Suivi.urls'  # Conservé "Suivi" comme nom du projet
+ROOT_URLCONF = 'Suivi.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Assurez-vous que le dossier templates existe
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -64,19 +64,11 @@ TEMPLATES = [
     },
 ]
 
-# Application WSGI
-#WSGI_APPLICATION = 'Suivi.wsgi.application'  # Conservé "Suivi" comme nom du projet
-
-# Base de données (SQLite)
-import os
-import dj_database_url
-
+# Base de données
 if os.environ.get('RENDER', None) == 'true':
     # Sur Render, utilise PostgreSQL
     DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL')
-        )
+        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
     }
 else:
     # En local, utilise SQLite
@@ -104,12 +96,8 @@ USE_TZ = True
 # Configuration des fichiers statiques
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATICFILES_DIRS = [BASE_DIR / 'static'] if (BASE_DIR / 'static').exists() else []
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
-
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Configuration des fichiers médias
 MEDIA_URL = '/media/'
@@ -120,7 +108,7 @@ LANGUAGES = [
     ('en', 'English'),
     ('fr', 'Français'),
 ]
-LOCALE_PATHS = [BASE_DIR / "locale"]
+LOCALE_PATHS = [BASE_DIR / 'locale']
 
 # Configuration de l'authentification
 LOGOUT_REDIRECT_URL = 'home'
@@ -158,14 +146,12 @@ LOGGING = {
 JAZZMIN_SETTINGS = {
     "show_ui_builder": True,
     "site_title": "Suivi",
-    
     "site_brand": "Nangui Abrogoua",
     "welcome_sign": "Bienvenue sur l'interface de gestion des suivis",
     "site_logo": "logo.jpeg",  # Assurez-vous que ce fichier existe dans le dossier static
     "search_model": "Suiv.SuiviEnseignement",
     "copyright": "Mon Site",
     "language_chooser": True,
-  
     "custom_links": {
         "Suiv.SuiviEnseignement": [
             {
@@ -183,7 +169,7 @@ JAZZMIN_SETTINGS = {
                 "permissions": ["Suiv.view_cours"]
             }
         ],
-         "Suiv.Enseignant": [
+        "Suiv.Enseignant": [
             {
                 "name": "Imprimer Enseignants Paginé",
                 "url": "admin:Suiv_enseignant_imprimer_enseignants_paginated",
@@ -203,7 +189,7 @@ JAZZMIN_SETTINGS = {
         "Suiv.AnneeAcademique": "fas fa-calendar-alt",
         "Suiv.Enseignant": "fas fa-chalkboard-teacher",
         "Suiv.NiveauEtude": "fas fa-layer-group",
-        "Suiv.GroupeEtudiant":"fas fa-users",
+        "Suiv.GroupeEtudiant": "fas fa-users",
         "Suiv.Semestre": "fas fa-calendar",
         "Suiv.Cours": "fas fa-book",
         "Suiv.SuiviEnseignement": "fas fa-clipboard-list",
