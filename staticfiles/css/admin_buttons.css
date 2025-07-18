@@ -1,0 +1,109 @@
+/* Styles pour les boutons d'action dans l'interface d'administration */
+.actions_buttons, .export_print_buttons {
+    white-space: nowrap;
+}
+
+.actions_buttons .button, .export_print_buttons .button {
+    display: inline-block;
+    margin: 2px;
+    padding: 4px 8px;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.actions_buttons .btn-warning {
+    background-color: #ffc107;
+    color: #212529;
+    border: 1px solid #ffc107;
+}
+
+.actions_buttons .btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+    color: #212529;
+}
+
+.actions_buttons .btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+    border: 1px solid #dc3545;
+}
+
+.actions_buttons .btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+    color: #fff;
+}
+
+.actions_buttons .btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+}
+
+.actions_buttons .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+    color: #fff;
+}
+
+/* Styles pour les boutons d'export et d'impression */
+.export_print_buttons .btn-success {
+    background-color: #28a745;
+    color: #fff;
+    border: 1px solid #28a745;
+}
+
+.export_print_buttons .btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    color: #fff;
+}
+
+.export_print_buttons .btn-info {
+    background-color: #17a2b8;
+    color: #fff;
+    border: 1px solid #17a2b8;
+}
+
+.export_print_buttons .btn-info:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+    color: #fff;
+}
+
+.actions_buttons .btn-sm, .export_print_buttons .btn-sm {
+    padding: 2px 6px;
+    font-size: 11px;
+}
+
+.actions_buttons i, .export_print_buttons i {
+    margin-right: 3px;
+}
+
+/* Responsive design pour les boutons */
+@media (max-width: 768px) {
+    .actions_buttons .button, .export_print_buttons .button {
+        display: block;
+        margin: 1px 0;
+        width: 100%;
+    }
+    
+    .actions_buttons, .export_print_buttons {
+        text-align: center;
+    }
+}
+
+/* Espacement entre les colonnes de boutons */
+.actions_buttons {
+    margin-right: 10px;
+}
+
+.export_print_buttons {
+    margin-left: 5px;
+} 

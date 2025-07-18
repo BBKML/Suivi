@@ -3,208 +3,564 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Impression de cours</title>
-    <style type="text/css">
-        /* Styles généraux */
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f9f9f9;
+    <title>Impression du suivi - UNA</title>
+    <style>
+        /* Reset et styles de base */
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #222;
+            background: #fff;
+            min-height: 100vh;
             padding: 20px;
         }
-        
+
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
         }
-        
+
+        /* Header moderne */
         .header-print {
+            background: #009640;
+            color: #fff;
+            padding: 32px 20px 20px 20px;
             text-align: center;
-            margin-bottom: 20px;
+            position: relative;
         }
-        
-        .logo {
-            max-width: 150px;
+
+        .header-print img.logo {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.95;
             margin-bottom: 10px;
         }
-        
-        .info-cours, .info-enseignant, .info-suivi {
-            margin: 20px 0;
+
+        .date {
+            font-size: 14px;
+            opacity: 0.9;
+            background: rgba(255,255,255,0.12);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
         }
-        
-        table {
+
+        /* Contenu principal */
+        .info-suivi {
+            padding: 40px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #009640;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #009640;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: '📊';
+            margin-right: 10px;
+            font-size: 24px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #009640;
+        }
+
+        /* Tableau de suivi moderne */
+        .suivi-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            margin-bottom: 30px;
         }
-        
-        table, th, td {
-            border: 1px solid #ddd;
+
+        .suivi-table thead {
+            background: #009640;
         }
-        
-        th, td {
-            padding: 12px;
+
+        .suivi-table th {
+            color: #fff;
+            padding: 18px 15px;
             text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
+
+        .suivi-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+            color: #222;
+            font-size: 14px;
         }
-        
-        .print-button {
-            margin: 20px 0;
-            text-align: center;
+
+        .suivi-table tbody tr {
+            transition: all 0.3s ease;
         }
-        
+
+        .suivi-table tbody tr:hover {
+            background: #f8f9fa;
+            transform: scale(1.01);
+        }
+
+        .suivi-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Badges pour les statuts */
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .badge-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .badge-info {
+            background: #3498db;
+            color: white;
+        }
+
+        .badge-primary {
+            background: #009640;
+            color: #fff;
+        }
+
+        /* Cartes de suivi */
+        .suivi-container {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #009640;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+        }
+
+        .suivi-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.10);
+        }
+
+        .suivi-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .suivi-icon {
+            width: 50px;
+            height: 50px;
+            background: #009640;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 20px;
+            margin-right: 15px;
+            box-shadow: 0 5px 15px rgba(0,150,64,0.10);
+        }
+
+        .suivi-info {
+            flex: 1;
+        }
+
+        .suivi-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #009640;
+            margin-bottom: 5px;
+        }
+
+        .suivi-subtitle {
+            font-size: 14px;
+            color: #009640;
+            font-weight: 600;
+        }
+
+        .suivi-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #222;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        /* Séparateur */
+        .separator {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #009640, transparent);
+            margin: 30px 0;
+            border-radius: 1px;
+        }
+
+        /* Footer */
         .footer-print {
-            margin-top: 50px;
+            background: #009640;
+            color: white;
             text-align: center;
-            font-size: 0.9em;
-            color: #777;
+            padding: 25px;
         }
-        
-        /* Styles spécifiques pour l'impression */
+
+        .footer-print p {
+            margin: 5px 0;
+            opacity: 0.95;
+        }
+
+        /* Boutons d'action */
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: #009640;
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(0,150,64,0.10);
+        }
+
+        .btn-primary:hover {
+            background: #007d33;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+            box-shadow: 0 5px 15px rgba(149, 165, 166, 0.12);
+        }
+
+        .btn-secondary:hover {
+            background: #7b8a8b;
+        }
+
+        /* Message d'état vide */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+
+        .empty-state::before {
+            content: '📊';
+            font-size: 48px;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        /* Styles d'impression */
         @media print {
             body {
-                font-size: 12pt;
-                color: #000;
-                background-color: #fff;
-            }
-        
-            .no-print {
-                display: none;
-            }
-        
-            .print-only {
-                display: block;
-            }
-        
-            header, footer, aside, nav, form, .header, .sidebar, .footer {
-                display: none;
-            }
-        
-            .container {
-                width: 100%;
-                margin: 0;
+                background: white;
                 padding: 0;
+            }
+
+            .container {
                 box-shadow: none;
+                border-radius: 0;
             }
-        
-            /* Évite de couper un cours entre deux pages */
-            .cours-container {
-                page-break-inside: avoid;
+
+            .header-print, .footer-print {
+                background: #009640 !important;
+                color: #fff !important;
             }
-        
-            /* Ajoute une marge en haut de chaque nouvelle page */
-            @page {
-                margin-top: 2cm;
-            }
-        
-            /* Évite de couper les lignes d'un tableau */
-            table {
-                page-break-inside: auto;
-            }
-        
-            tr {
-                page-break-inside: avoid;
-                page-break-after: auto;
-            }
-        
-            .table td, .table th {
-                border: 1px solid #000;
-            }
-        
-            .btn {
+
+            .print-button {
                 display: none;
             }
-            td {
-                font-size: 14px;
-                text-align: center;
+
+            .suivi-container:hover {
+                transform: none;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             }
-            
-            .status-yes {
-                color: green;
+
+            .suivi-table thead {
+                background: #009640 !important;
             }
-            
-            .status-no {
-                color: red;
+
+            .suivi-table tbody tr:hover {
+                transform: none;
+                background: #f8f9fa;
             }
-            
+
+            @page {
+                margin: 1.5cm;
+                size: A4 landscape;
+            }
+
+            .suivi-container {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+
+            .header-print {
+                padding: 20px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .info-suivi {
+                padding: 20px;
+            }
+
+            .suivi-table {
+                font-size: 12px;
+            }
+
+            .suivi-table th,
+            .suivi-table td {
+                padding: 10px 8px;
+            }
+
+            .print-button {
+                position: static;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Boutons d'action -->
-        <div class="no-print print-button">
-            <button onclick="window.print()" class="btn btn-primary">Imprimer</button>
-            <button onclick="window.history.back()" class="btn btn-secondary">Retour</button>
-        </div>
-
-        <!-- En-tête avec logo et titre -->
-        <div class="header-print">
-            <img src="http://127.0.0.1:8000/static/logo.jpeg" alt="Logo Université" class="logo"> <!-- Remplacez par l'URL de votre logo -->
-            <h2>UNIVERSITÉ NANGUI ABROGOUA</h2>
-            <p>FICHE DE SUIVIS</p>
-            <p>Date d'impression: {{ today|date:"d/m/Y" }}</p>
-        </div>
-
-           <!-- Section Suivi -->
-    <div class="info-suivi">
-        <h3>Suivi des cours</h3>
-        {% for suivi in suivi_list %}
-        <div class="suivi-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Enseignant</th>
-                        <th>Parcours</th>
-                        <th>Niveau d'étude</th>
-                        <th>Semestre</th>
-                        <th>Intitulé du cours</th>
-                        <th>Date du cours</th>
-                        <th>Horaire début</th>
-                        <th>Horaire fin</th>
-                        <th>Total heures cumulées</th>
-                        <th>Statut émargement</th>
-                       
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ suivi.enseignant.user.last_name }} {{ suivi.enseignant.user.first_name }}</td>
-                        <td>{{ suivi.cours.parcours }}</td>
-                        <td>{{ suivi.cours.niveau.libelle_niveau }}</td>
-                        <td>{{ suivi.cours.semestre.libelle_semestre }}</td>
-                        <td>{{ suivi.cours.code_cours }} - {{ suivi.cours.intitule_ue }}</td>
-                        <td>{{ suivi.date_cours }}</td>
-                        <td>{{ suivi.horaire_debut }}</td>
-                        <td>{{ suivi.horaire_fin }}</td>
-                        <td>{{ suivi.total_heures_cumulees }}</td>
-                        <td>{{ suivi.status_emargement }}</td>
-
-                        
-                        
-                    </tr>
-                </tbody>
-            </table>
-            <hr> <!-- Séparation entre les suivis -->
-        </div>
-        {% empty %}
-        <p>Aucun suivi de cours à afficher.</p>
-        {% endfor %}
+    <!-- Boutons d'action -->
+    <div class="print-button no-print">
+        <button onclick="window.print()" class="btn btn-primary">
+            🖨️ Imprimer
+        </button>
+        <button onclick="window.history.back()" class="btn btn-secondary">
+            ↩️ Retour
+        </button>
     </div>
+
+    <div class="container">
+        <!-- En-tête -->
+        <div class="header-print">
+            <img src="/static/logo.jpeg" alt="Logo Université" class="logo">
+            <h2 class="title">UNIVERSITÉ NANGUI ABROGOUA</h2>
+            <p class="subtitle">📊 FICHE DE SUIVI</p>
+            <div class="date">Date d'impression: {{ today|date:"d/m/Y à H:i" }}</div>
+        </div>
+
+        <!-- Informations du suivi -->
+        <div class="info-suivi">
+            <div class="section-title">Suivi des cours</div>
+            
+            {% for suivi in suivi_list %}
+                <div class="suivi-container">
+                    <div class="suivi-header">
+                        <div class="suivi-icon">📚</div>
+                        <div class="suivi-info">
+                            <div class="suivi-title">{{ suivi.cours.code_cours }} - {{ suivi.cours.intitule_ue }}</div>
+                            <div class="suivi-subtitle">{{ suivi.enseignant.user.last_name }} {{ suivi.enseignant.user.first_name }}</div>
+                            <div class="suivi-stats">
+                                <div class="stat-item">📅 {{ suivi.date_cours }}</div>
+                                <div class="stat-item">⏰ {{ suivi.horaire_debut }} - {{ suivi.horaire_fin }}</div>
+                                <div class="stat-item">🕐 {{ suivi.total_heures_cumulees }}h</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <table class="suivi-table">
+                        <thead>
+                            <tr>
+                                <th>👨‍🏫 Enseignant</th>
+                                <th>🎯 Parcours</th>
+                                <th>🎓 Niveau</th>
+                                <th>📅 Semestre</th>
+                                <th>📚 Cours</th>
+                                <th>📆 Date</th>
+                                <th>⏰ Début</th>
+                                <th>⏰ Fin</th>
+                                <th>🕐 Heures</th>
+                                <th>✅ Émargement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>{{ suivi.enseignant.user.last_name }} {{ suivi.enseignant.user.first_name }}</strong>
+                                </td>
+                                <td>
+                                    <span class="badge badge-primary">{{ suivi.cours.parcours }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-info">{{ suivi.cours.niveau.libelle_niveau }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-warning">{{ suivi.cours.semestre.libelle_semestre }}</span>
+                                </td>
+                                <td>
+                                    <strong>{{ suivi.cours.code_cours }} - {{ suivi.cours.intitule_ue }}</strong>
+                                </td>
+                                <td>
+                                    <span class="badge badge-primary">{{ suivi.date_cours }}</span>
+                                </td>
+                                <td>{{ suivi.horaire_debut }}</td>
+                                <td>{{ suivi.horaire_fin }}</td>
+                                <td>
+                                    <strong>{{ suivi.total_heures_cumulees }}h</strong>
+                                </td>
+                                <td>
+                                    {% if suivi.status_emargement %}
+                                        <span class="badge badge-success">✅ Effectué</span>
+                                    {% else %}
+                                        <span class="badge badge-danger">❌ Non effectué</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                {% if not forloop.last %}
+                    <div class="separator"></div>
+                {% endif %}
+            {% empty %}
+                <div class="empty-state">
+                    <h3>Aucun suivi à afficher</h3>
+                    <p>Il n'y a actuellement aucun suivi de cours disponible pour l'impression.</p>
+                </div>
+            {% endfor %}
+        </div>
 
         <!-- Pied de page -->
         <div class="footer-print">
-            <p>&copy; 2025 Université Nangui Abrogoua - Tous droits réservés</p>
+            <p>📧 Document généré automatiquement par le système de suivi d'enseignement</p>
+            <p>🏛️ Université Nangui Abrogoua - Tous droits réservés</p>
+            <p>📅 {{ today|date:"d/m/Y H:i" }}</p>
         </div>
     </div>
+
+    <script>
+        // Amélioration de l'expérience utilisateur
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation d'entrée pour les suivis
+            const suiviContainers = document.querySelectorAll('.suivi-container');
+            suiviContainers.forEach((container, index) => {
+                container.style.opacity = '0';
+                container.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    container.style.transition = 'all 0.5s ease';
+                    container.style.opacity = '1';
+                    container.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+
+            // Animation pour les lignes du tableau
+            const tableRows = document.querySelectorAll('.suivi-table tbody tr');
+            tableRows.forEach((row, index) => {
+                row.style.opacity = '0';
+                row.style.transform = 'translateX(-20px)';
+                setTimeout(() => {
+                    row.style.transition = 'all 0.3s ease';
+                    row.style.opacity = '1';
+                    row.style.transform = 'translateX(0)';
+                }, index * 50);
+            });
+
+            // Confirmation avant fermeture
+            window.addEventListener('beforeunload', function(e) {
+                if (document.querySelector('.suivi-container')) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

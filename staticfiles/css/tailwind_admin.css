@@ -1,0 +1,314 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import de la police Inter depuis Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Styles de base personnalisés */
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-gradient-to-br from-primary-50 to-secondary-100 min-h-screen;
+  }
+}
+
+/* Composants personnalisés pour l'administration */
+@layer components {
+  /* Header de l'administration */
+  .admin-header {
+    @apply bg-gradient-to-r from-primary-600 to-primary-800 text-white shadow-soft;
+  }
+  
+  /* Navigation principale */
+  .admin-nav {
+    @apply bg-white/80 backdrop-blur-sm border-b border-secondary-200;
+  }
+  
+  /* Modules et conteneurs */
+  .admin-module {
+    @apply bg-white rounded-xl shadow-soft border border-secondary-100 overflow-hidden;
+  }
+  
+  .admin-module-header {
+    @apply bg-gradient-to-r from-primary-600 to-primary-700 text-white px-6 py-4 font-semibold;
+  }
+  
+  /* Tableaux */
+  .admin-table {
+    @apply w-full bg-white rounded-lg overflow-hidden shadow-soft;
+  }
+  
+  .admin-table thead {
+    @apply bg-gradient-to-r from-secondary-50 to-secondary-100;
+  }
+  
+  .admin-table th {
+    @apply px-6 py-4 text-left text-sm font-semibold text-secondary-700 border-b border-secondary-200;
+  }
+  
+  .admin-table td {
+    @apply px-6 py-4 text-sm text-secondary-600 border-b border-secondary-100;
+  }
+  
+  .admin-table tbody tr {
+    @apply transition-all duration-300 hover:bg-secondary-50 hover:shadow-medium hover:-translate-y-0.5;
+  }
+  
+  /* Boutons d'action */
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-glow hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+  
+  .btn-secondary {
+    @apply bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-medium hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2;
+  }
+  
+  .btn-success {
+    @apply bg-gradient-to-r from-success-500 to-success-600 hover:from-success-600 hover:to-success-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-glow-success hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-success-500 focus:ring-offset-2;
+  }
+  
+  .btn-warning {
+    @apply bg-gradient-to-r from-warning-500 to-warning-600 hover:from-warning-600 hover:to-warning-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-glow-warning hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-warning-500 focus:ring-offset-2;
+  }
+  
+  .btn-danger {
+    @apply bg-gradient-to-r from-danger-500 to-danger-600 hover:from-danger-600 hover:to-danger-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-glow-danger hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-danger-500 focus:ring-offset-2;
+  }
+  
+  .btn-info {
+    @apply bg-gradient-to-r from-info-500 to-info-600 hover:from-info-600 hover:to-info-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-medium hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-info-500 focus:ring-offset-2;
+  }
+  
+  /* Boutons d'action dans les tableaux */
+  .action-btn {
+    @apply inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  
+  .action-btn-edit {
+    @apply action-btn bg-warning-500 hover:bg-warning-600 text-white focus:ring-warning-500;
+  }
+  
+  .action-btn-delete {
+    @apply action-btn bg-danger-500 hover:bg-danger-600 text-white focus:ring-danger-500;
+  }
+  
+  .action-btn-export {
+    @apply action-btn bg-success-500 hover:bg-success-600 text-white focus:ring-success-500;
+  }
+  
+  .action-btn-print {
+    @apply action-btn bg-info-500 hover:bg-info-600 text-white focus:ring-info-500;
+  }
+  
+  /* Formulaires */
+  .form-group {
+    @apply mb-6;
+  }
+  
+  .form-label {
+    @apply block text-sm font-semibold text-secondary-700 mb-2 uppercase tracking-wide;
+  }
+  
+  .form-input {
+    @apply w-full px-4 py-3 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 bg-white;
+  }
+  
+  .form-select {
+    @apply form-input appearance-none bg-no-repeat bg-right pr-10;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-size: 1.5em 1.5em;
+  }
+  
+  .form-textarea {
+    @apply form-input resize-y min-h-[100px];
+  }
+  
+  .form-checkbox {
+    @apply h-4 w-4 text-primary-600 focus:ring-primary-500 border-secondary-300 rounded;
+  }
+  
+  .form-radio {
+    @apply h-4 w-4 text-primary-600 focus:ring-primary-500 border-secondary-300;
+  }
+  
+  /* Messages */
+  .message {
+    @apply p-4 rounded-lg border-l-4 mb-4;
+  }
+  
+  .message-success {
+    @apply message bg-success-50 border-success-500 text-success-700;
+  }
+  
+  .message-error {
+    @apply message bg-danger-50 border-danger-500 text-danger-700;
+  }
+  
+  .message-warning {
+    @apply message bg-warning-50 border-warning-500 text-warning-700;
+  }
+  
+  .message-info {
+    @apply message bg-info-50 border-info-500 text-info-700;
+  }
+  
+  /* Pagination */
+  .pagination {
+    @apply flex items-center justify-center space-x-2 my-6;
+  }
+  
+  .pagination-item {
+    @apply px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200;
+  }
+  
+  .pagination-link {
+    @apply pagination-item text-secondary-600 hover:bg-secondary-100 hover:text-secondary-900;
+  }
+  
+  .pagination-current {
+    @apply pagination-item bg-primary-600 text-white;
+  }
+  
+  /* Breadcrumbs */
+  .breadcrumbs {
+    @apply flex items-center space-x-2 text-sm text-secondary-600 mb-6;
+  }
+  
+  .breadcrumb-item {
+    @apply hover:text-primary-600 transition-colors duration-200;
+  }
+  
+  .breadcrumb-separator {
+    @apply text-secondary-400;
+  }
+  
+  /* Sidebar */
+  .admin-sidebar {
+    @apply bg-white/90 backdrop-blur-sm border-r border-secondary-200;
+  }
+  
+  .sidebar-item {
+    @apply flex items-center px-4 py-3 text-secondary-700 hover:bg-primary-50 hover:text-primary-700 transition-all duration-200 rounded-lg mx-2 mb-1;
+  }
+  
+  .sidebar-item.active {
+    @apply bg-primary-100 text-primary-700 font-medium;
+  }
+  
+  /* Cards */
+  .admin-card {
+    @apply bg-white rounded-xl shadow-soft border border-secondary-100 p-6 hover:shadow-medium transition-all duration-300;
+  }
+  
+  .admin-card-header {
+    @apply flex items-center justify-between mb-4;
+  }
+  
+  .admin-card-title {
+    @apply text-lg font-semibold text-secondary-900;
+  }
+  
+  .admin-card-content {
+    @apply text-secondary-600;
+  }
+  
+  /* Stats */
+  .stat-card {
+    @apply admin-card text-center;
+  }
+  
+  .stat-number {
+    @apply text-3xl font-bold text-primary-600 mb-2;
+  }
+  
+  .stat-label {
+    @apply text-sm text-secondary-600 uppercase tracking-wide;
+  }
+  
+  /* Loading states */
+  .loading {
+    @apply animate-pulse bg-secondary-200 rounded;
+  }
+  
+  .loading-text {
+    @apply loading h-4 w-32;
+  }
+  
+  .loading-button {
+    @apply loading h-10 w-24;
+  }
+  
+  /* Tooltips */
+  .tooltip {
+    @apply relative inline-block;
+  }
+  
+  .tooltip-content {
+    @apply absolute z-10 px-3 py-2 text-sm text-white bg-secondary-900 rounded-lg opacity-0 invisible transition-all duration-200 -translate-y-2;
+  }
+  
+  .tooltip:hover .tooltip-content {
+    @apply opacity-100 visible translate-y-0;
+  }
+  
+  /* Notifications toast */
+  .toast {
+    @apply fixed top-4 right-4 z-50 p-4 rounded-lg shadow-strong border-l-4 max-w-sm;
+  }
+  
+  .toast-success {
+    @apply toast bg-success-50 border-success-500 text-success-700;
+  }
+  
+  .toast-error {
+    @apply toast bg-danger-50 border-danger-500 text-danger-700;
+  }
+  
+  .toast-warning {
+    @apply toast bg-warning-50 border-warning-500 text-warning-700;
+  }
+  
+  .toast-info {
+    @apply toast bg-info-50 border-info-500 text-info-700;
+  }
+}
+
+/* Utilitaires personnalisés */
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent;
+  }
+  
+  .bg-glass {
+    @apply bg-white/80 backdrop-blur-sm;
+  }
+  
+  .shadow-glow-primary {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  
+  .shadow-glow-success {
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+  }
+  
+  .shadow-glow-warning {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+  }
+  
+  .shadow-glow-danger {
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+} 

@@ -3,213 +3,545 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Impression de cours</title>
-    <style type="text/css">
-        /* Styles généraux */
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f9f9f9;
+    <title>Impression des enseignants - UNA</title>
+    <style>
+        /* Reset et styles de base */
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #222;
+            background: #fff;
+            min-height: 100vh;
             padding: 20px;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
         }
 
+        /* Header moderne */
         .header-print {
+            background: #009640;
+            color: #fff;
+            padding: 32px 20px 20px 20px;
             text-align: center;
-            margin-bottom: 20px;
+            position: relative;
         }
 
-        .logo {
-            max-width: 150px;
+        .header-print img.logo {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.95;
             margin-bottom: 10px;
         }
 
-        .info-cours, .info-enseignant {
-            margin: 20px 0;
+        .date {
+            font-size: 14px;
+            opacity: 0.9;
+            background: rgba(255,255,255,0.12);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
         }
 
-        table {
+        /* Contenu principal */
+        .info-enseignant {
+            padding: 40px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #009640;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #009640;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: '👨‍🏫';
+            margin-right: 10px;
+            font-size: 24px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #009640;
+        }
+
+        /* Cartes d'enseignants */
+        .enseignant-container {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #009640;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+        }
+
+        .enseignant-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .enseignant-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .enseignant-avatar {
+            width: 60px;
+            height: 60px;
+            background: #009640;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 15px;
+            box-shadow: 0 5px 15px rgba(0,150,64,0.10);
+        }
+
+        .enseignant-info {
+            flex: 1;
+        }
+
+        .enseignant-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #009640;
+            margin-bottom: 5px;
+        }
+
+        .enseignant-matricule {
+            font-size: 14px;
+            color: #009640;
+            font-weight: 600;
+        }
+
+        .enseignant-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #222;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        /* Tableau moderne */
+        .enseignant-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
         }
 
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 12px;
+        .enseignant-table th {
+            background: #009640;
+            color: #fff;
+            padding: 15px;
             text-align: left;
+            font-weight: 600;
+            font-size: 14px;
         }
 
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
+        .enseignant-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+            color: #222;
         }
 
-        .print-button {
-            margin: 20px 0;
-            text-align: center;
+        .enseignant-table tr:last-child td {
+            border-bottom: none;
         }
 
+        .enseignant-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Badges pour les valeurs */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-primary {
+            background: #009640;
+            color: #fff;
+        }
+
+        .badge-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .badge-info {
+            background: #3498db;
+            color: white;
+        }
+
+        .badge-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        /* Séparateur */
+        .separator {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #009640, transparent);
+            margin: 30px 0;
+            border-radius: 1px;
+        }
+
+        /* Footer */
         .footer-print {
-            margin-top: 50px;
+            background: #009640;
+            color: white;
             text-align: center;
-            font-size: 0.9em;
-            color: #777;
+            padding: 25px;
         }
 
-        /* Styles spécifiques pour l'impression */
+        .footer-print p {
+            margin: 5px 0;
+            opacity: 0.95;
+        }
+
+        /* Boutons d'action */
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: #009640;
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(0,150,64,0.10);
+        }
+
+        .btn-primary:hover {
+            background: #007d33;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+            box-shadow: 0 5px 15px rgba(149, 165, 166, 0.12);
+        }
+
+        .btn-secondary:hover {
+            background: #7b8a8b;
+        }
+
+        /* Message d'état vide */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+
+        .empty-state::before {
+            content: '👨‍🏫';
+            font-size: 48px;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        /* Styles d'impression */
         @media print {
             body {
-                font-size: 12pt;
-                color: #000;
-                background-color: #fff;
-            }
-
-            .no-print {
-                display: none;
-            }
-
-            .print-only {
-                display: block;
-            }
-
-            header, footer, aside, nav, form, .header, .sidebar, .footer {
-                display: none;
+                background: white;
+                padding: 0;
             }
 
             .container {
-                width: 100%;
-                margin: 0;
-                padding: 0;
                 box-shadow: none;
+                border-radius: 0;
             }
 
-            /* Évite de couper un cours entre deux pages */
-            .cours-container {
-                page-break-inside: avoid;
+            .header-print, .footer-print {
+                background: #009640 !important;
+                color: #fff !important;
             }
 
-            /* Ajoute une marge en haut de chaque nouvelle page */
-            @page {
-                margin-top: 2cm;
-            }
-
-            /* Évite de couper les lignes d'un tableau */
-            table {
-                page-break-inside: auto;
-            }
-
-            tr {
-                page-break-inside: avoid;
-                page-break-after: auto;
-            }
-
-            .table td, .table th {
-                border: 1px solid #000;
-            }
-
-            .btn {
+            .print-button {
                 display: none;
+            }
+
+            .enseignant-container:hover {
+                transform: none;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            }
+
+            .enseignant-table th {
+                background: #009640 !important;
+                color: #fff !important;
+            }
+
+            @page {
+                margin: 1.5cm;
+                size: A4;
+            }
+
+            .enseignant-container {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+
+            .header-print {
+                padding: 20px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .info-enseignant {
+                padding: 20px;
+            }
+
+            .enseignant-table {
+                font-size: 12px;
+            }
+
+            .enseignant-table th,
+            .enseignant-table td {
+                padding: 10px 8px;
+            }
+
+            .print-button {
+                position: static;
+                justify-content: center;
+                margin-bottom: 20px;
             }
         }
     </style>
 </head>
 <body>
-
-<div class="container">
     <!-- Boutons d'action -->
-    <div class="no-print print-button">
-        <button onclick="window.print()" class="btn btn-primary">Imprimer</button>
-        <button onclick="window.history.back()" class="btn btn-secondary">Retour</button>
+    <div class="print-button no-print">
+        <button onclick="window.print()" class="btn btn-primary">
+            🖨️ Imprimer
+        </button>
+        <button onclick="window.history.back()" class="btn btn-secondary">
+            ↩️ Retour
+        </button>
     </div>
 
-    <!-- En-tête avec logo et titre -->
+    <div class="container">
+        <!-- En-tête -->
     <div class="header-print">
-        <img src="http://127.0.0.1:8000/static/logo.jpeg" alt="Logo Université" class="logo"> <!-- Remplacez par l'URL de votre logo -->
-        <h2>UNIVERSITÉ NANGUI ABROGOUA</h2>
-        <p>FICHE D'ENSEIGNANTS</p>
-        <p>Date d'impression: {{ today|date:"d/m/Y" }}</p>
-    </div>
+            <img src="/static/logo.jpeg" alt="Logo Université" class="logo">
+            <h2 class="title">UNIVERSITÉ NANGUI ABROGOUA</h2>
+            <p class="subtitle">👨‍🏫 FICHE D'ENSEIGNANTS</p>
+            <div class="date">Date d'impression: {{ today|date:"d/m/Y à H:i" }}</div>
+        </div>
 
-    <!-- Informations de l'enseignant -->
-       <!-- Section Enseignant -->
+        <!-- Informations des enseignants -->
        <div class="info-enseignant">
-        <h3>Liste des enseignants</h3>
+            <div class="section-title">Liste des enseignants</div>
+            
         {% for enseignant in enseignant_list %}
-<!-- Informations de l'enseignant -->
-<div class="info-enseignant">
-    <h3>Informations de l'enseignant</h3>
-    <table>
-        <tr>
-            <th>Matricule</th>
+                <div class="enseignant-container">
+                    <div class="enseignant-header">
+                        <div class="enseignant-avatar">
+                            {{ enseignant.nom|first|upper }}{{ enseignant.prenom|first|upper }}
+                        </div>
+                        <div class="enseignant-info">
+                            <div class="enseignant-name">{{ enseignant.nom }} {{ enseignant.prenom }}</div>
+                            <div class="enseignant-matricule">Matricule: {{ enseignant.matricule }}</div>
+                            <div class="enseignant-stats">
+                                <div class="stat-item">📚 {{ enseignant.cours_enseignes.count }} cours</div>
+                                <div class="stat-item">📧 {{ enseignant.email }}</div>
+                                <div class="stat-item">📞 {{ enseignant.contact }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <table class="enseignant-table">
+                        <tr>
+                            <th>🆔 Matricule</th>
             <td>{{ enseignant.matricule }}</td>
         </tr>
         <tr>
-            <th>Nom</th>
+                            <th>👤 Nom</th>
             <td>{{ enseignant.nom }}</td>
         </tr>
         <tr>
-            <th>Prénom</th>
+                            <th>👤 Prénom</th>
             <td>{{ enseignant.prenom }}</td>
         </tr>
         <tr>
-            <th>Email</th>
+                            <th>📧 Email</th>
             <td>{{ enseignant.email }}</td>
         </tr>
         <tr>
-            <th>Grade</th>
-            <td>{{ enseignant.grade.libelle_grade|default:"" }}</td>
+                            <th>🎓 Grade</th>
+                            <td>
+                                <span class="badge badge-primary">{{ enseignant.grade.libelle_grade|default:"Non défini" }}</span>
+                            </td>
         </tr>
         <tr>
-            <th>Statut</th>
-            <td>{{ enseignant.statut.libelle_statut|default:"" }}</td>
+                            <th>📋 Statut</th>
+                            <td>
+                                <span class="badge badge-success">{{ enseignant.statut.libelle_statut|default:"Non défini" }}</span>
+                            </td>
         </tr>
         <tr>
-            <th>Structure d'origine</th>
-            <td>{{ enseignant.structure_origine|default:"" }}</td>
+                            <th>🏢 Structure d'origine</th>
+                            <td>{{ enseignant.structure_origine|default:"Non définie" }}</td>
         </tr>
         <tr>
-            <th>Contact</th>
+                            <th>📞 Contact</th>
             <td>{{ enseignant.contact }}</td>
         </tr>
         <tr>
-            <th>Année académique</th>
-            <td>{{ enseignant.annee_academique.annee|default:"" }}</td>
+                            <th>📅 Année académique</th>
+                            <td>
+                                <span class="badge badge-warning">{{ enseignant.annee_academique.annee|default:"Non définie" }}</span>
+                            </td>
         </tr>
         <tr>
-            <th>Genre</th>
-            <td>{{ enseignant.get_genre_display }}</td>
+                            <th>👥 Genre</th>
+                            <td>
+                                <span class="badge badge-info">{{ enseignant.get_genre_display }}</span>
+                            </td>
         </tr>
         <tr>
-            <th>Nombre de cours enseignés</th>
-            <td>{{ enseignant.cours_enseignes.count }}</td>
+                            <th>📚 Cours enseignés</th>
+                            <td>
+                                <strong>{{ enseignant.cours_enseignes.count }} cours</strong>
+                            </td>
         </tr>
     </table>
     </div>
+                
+                {% if not forloop.last %}
+                    <div class="separator"></div>
+                {% endif %}
         {% empty %}
-        <p>Aucun enseignant à afficher.</p>
+                <div class="empty-state">
+                    <h3>Aucun enseignant à afficher</h3>
+                    <p>Il n'y a actuellement aucun enseignant disponible pour l'impression.</p>
+                </div>
         {% endfor %}
     </div>
 
-    
-
     <!-- Pied de page -->
     <div class="footer-print">
-        <p>&copy; 2025 Université Nangui Abrogoua - Tous droits réservés</p>
+            <p>📧 Document généré automatiquement par le système de suivi d'enseignement</p>
+            <p>🏛️ Université Nangui Abrogoua - Tous droits réservés</p>
+            <p>📅 {{ today|date:"d/m/Y H:i" }}</p>
+        </div>
     </div>
-</div>
 
+    <script>
+        // Amélioration de l'expérience utilisateur
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation d'entrée pour les enseignants
+            const enseignantContainers = document.querySelectorAll('.enseignant-container');
+            enseignantContainers.forEach((container, index) => {
+                container.style.opacity = '0';
+                container.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    container.style.transition = 'all 0.5s ease';
+                    container.style.opacity = '1';
+                    container.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+
+            // Confirmation avant fermeture
+            window.addEventListener('beforeunload', function(e) {
+                if (document.querySelector('.enseignant-container')) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

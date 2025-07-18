@@ -3,193 +3,483 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Impression de cours</title>
-    <style type="text/css">
-        /* Styles généraux */
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f9f9f9;
+    <title>Impression des cours - UNA</title>
+    <style>
+        /* Reset et styles de base */
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #222;
+            background: #fff;
+            min-height: 100vh;
             padding: 20px;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
         }
 
+        /* Header moderne */
         .header-print {
+            background: #009640;
+            color: #fff;
+            padding: 32px 20px 20px 20px;
             text-align: center;
-            margin-bottom: 20px;
+            position: relative;
         }
 
-        .logo {
-            max-width: 150px;
+        .header-print img.logo {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.95;
             margin-bottom: 10px;
         }
 
-        .info-cours {
-            margin: 20px 0;
+        .date {
+            font-size: 14px;
+            opacity: 0.9;
+            background: rgba(255,255,255,0.12);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
         }
 
-        table {
+        /* Contenu principal */
+        .info-cours {
+            padding: 40px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #009640;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #009640;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: '📚';
+            margin-right: 10px;
+            font-size: 24px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #009640;
+        }
+
+        /* Cartes de cours */
+        .cours-container {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #009640;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+        }
+
+        .cours-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .cours-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .cours-code {
+            background: #009640;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-right: 15px;
+        }
+
+        .cours-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #009640;
+            flex: 1;
+        }
+
+        /* Tableau moderne */
+        .cours-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
         }
 
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 12px;
+        .cours-table th {
+            background: #009640;
+            color: #fff;
+            padding: 15px;
             text-align: left;
+            font-weight: 600;
+            font-size: 14px;
         }
 
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
+        .cours-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+            color: #222;
         }
 
-        .print-button {
-            margin: 20px 0;
-            text-align: center;
+        .cours-table tr:last-child td {
+            border-bottom: none;
         }
 
+        .cours-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Badges pour les valeurs */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-primary {
+            background: #009640;
+            color: #fff;
+        }
+
+        .badge-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .badge-info {
+            background: #3498db;
+            color: white;
+        }
+
+        /* Séparateur */
+        .separator {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #009640, transparent);
+            margin: 30px 0;
+            border-radius: 1px;
+        }
+
+        /* Footer */
         .footer-print {
-            margin-top: 50px;
+            background: #009640;
+            color: white;
             text-align: center;
-            font-size: 0.9em;
-            color: #777;
+            padding: 25px;
         }
 
-        /* Styles spécifiques pour l'impression */
+        .footer-print p {
+            margin: 5px 0;
+            opacity: 0.95;
+        }
+
+        /* Boutons d'action */
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: #009640;
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(0,150,64,0.10);
+        }
+
+        .btn-primary:hover {
+            background: #007d33;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+            box-shadow: 0 5px 15px rgba(149, 165, 166, 0.12);
+        }
+
+        .btn-secondary:hover {
+            background: #7b8a8b;
+        }
+
+        /* Message d'état vide */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+
+        .empty-state::before {
+            content: '📚';
+            font-size: 48px;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        /* Styles d'impression */
         @media print {
             body {
-                font-size: 12pt;
-                color: #000;
-                background-color: #fff;
-            }
-
-            .no-print {
-                display: none;
-            }
-
-            .print-only {
-                display: block;
-            }
-
-            header, footer, aside, nav, form, .header, .sidebar, .footer {
-                display: none;
+                background: white;
+                padding: 0;
             }
 
             .container {
-                width: 100%;
-                margin: 0;
-                padding: 0;
                 box-shadow: none;
+                border-radius: 0;
             }
 
-            /* Évite de couper un cours entre deux pages */
+            .header-print, .footer-print {
+                background: #009640 !important;
+                color: #fff !important;
+            }
+
+            .print-button {
+                display: none;
+            }
+
+            .cours-container:hover {
+                transform: none;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            }
+
+            .cours-table th {
+                background: #009640 !important;
+                color: #fff !important;
+            }
+
+            @page {
+                margin: 1.5cm;
+                size: A4;
+            }
+
             .cours-container {
                 page-break-inside: avoid;
             }
+        }
 
-            /* Ajoute une marge en haut de chaque nouvelle page */
-            @page {
-                margin-top: 2cm;
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
             }
 
-            /* Évite de couper les lignes d'un tableau */
-            table {
-                page-break-inside: auto;
+            .header-print {
+                padding: 20px;
             }
 
-            tr {
-                page-break-inside: avoid;
-                page-break-after: auto;
+            .title {
+                font-size: 24px;
             }
 
-            .table td, .table th {
-                border: 1px solid #000;
+            .info-cours {
+                padding: 20px;
             }
 
-            .btn {
-                display: none;
+            .cours-table {
+                font-size: 12px;
+            }
+
+            .cours-table th,
+            .cours-table td {
+                padding: 10px 8px;
+            }
+
+            .print-button {
+                position: static;
+                justify-content: center;
+                margin-bottom: 20px;
             }
         }
     </style>
 </head>
 <body>
-
-<div class="container">
     <!-- Boutons d'action -->
-    <div class="no-print print-button">
-        <button onclick="window.print()" class="btn btn-primary">Imprimer</button>
-        <button onclick="window.history.back()" class="btn btn-secondary">Retour</button>
+    <div class="print-button no-print">
+        <button onclick="window.print()" class="btn btn-primary">
+            🖨️ Imprimer
+        </button>
+        <button onclick="window.history.back()" class="btn btn-secondary">
+            ↩️ Retour
+        </button>
     </div>
 
-    <!-- En-tête avec logo et titre -->
-    <div class="header-print">
-        <img src="http://127.0.0.1:8000/static/logo.jpeg" alt="Logo Université" class="logo"> <!-- Remplacez par l'URL de votre logo -->
-        <h2>UNIVERSITÉ NANGUI ABROGOUA</h2>
-        <p>FICHE DE COURS</p>
-        <p>Date d'impression: {{ today|date:"d/m/Y" }}</p>
-    </div>
-
-    <!-- Informations des cours -->
-    <div class="info-cours">
-        <h3>Informations des cours</h3>
-        {% for cours in cours_list %}
-        <div class="cours-container">
-            <table>
-                <tr>
-                    <th>Code</th>
-                    <td>{{ cours.code_cours }}</td>
-                </tr>
-                <tr>
-                    <th>UE</th>
-                    <td>{{ cours.intitule_ue }}</td>
-                </tr>
-                <tr>
-                    <th>ECUE</th>
-                    <td>{{ cours.intitule_ecue }}</td>
-                </tr>
-                <tr>
-                    <th>Niveau</th>
-                    <td>{{ cours.niveau.libelle_niveau }}</td>
-                </tr>
-                <tr>
-                    <th>Semestre</th>
-                    <td>{{ cours.semestre.libelle_semestre }}</td>
-                </tr>
-                <tr>
-                    <th>Parcours</th>
-                    <td>{{ cours.parcours }}</td>
-                </tr>
-                <tr>
-                    <th>Salle</th>
-                    <td>{{ cours.salle.nom_salle }}</td>
-                </tr>
-            </table>
-            <hr> <!-- Séparation entre les cours -->
+    <div class="container">
+        <!-- En-tête -->
+        <div class="header-print">
+            <img src="/static/logo.jpeg" alt="Logo Université" class="logo">
+            <h2 class="title">UNIVERSITÉ NANGUI ABROGOUA</h2>
+            <p class="subtitle">📚 FICHE DE COURS</p>
+            <div class="date">Date d'impression: {{ today|date:"d/m/Y à H:i" }}</div>
         </div>
-        {% empty %}
-        <p>Aucun cours à afficher.</p>
-        {% endfor %}
+
+        <!-- Informations des cours -->
+        <div class="info-cours">
+            <div class="section-title">Informations des cours</div>
+            
+            {% for cours in cours_list %}
+                <div class="cours-container">
+                    <div class="cours-header">
+                        <div class="cours-code">{{ cours.code_cours }}</div>
+                        <div class="cours-title">{{ cours.intitule_ue }}</div>
+                    </div>
+                    
+                    <table class="cours-table">
+                        <tr>
+                            <th>📖 UE</th>
+                            <td>{{ cours.intitule_ue }}</td>
+                        </tr>
+                        <tr>
+                            <th>📝 ECUE</th>
+                            <td>{{ cours.intitule_ecue }}</td>
+                        </tr>
+                        <tr>
+                            <th>🎓 Niveau</th>
+                            <td>
+                                <span class="badge badge-primary">{{ cours.niveau.libelle_niveau }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>📅 Semestre</th>
+                            <td>
+                                <span class="badge badge-success">{{ cours.semestre.libelle_semestre }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>🎯 Parcours</th>
+                            <td>
+                                <span class="badge badge-warning">{{ cours.parcours }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>🏢 Salle</th>
+                            <td>
+                                <span class="badge badge-info">{{ cours.salle.nom_salle }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>⏰ Total Heures</th>
+                            <td>
+                                <strong>{{ cours.total_heures }} heures</strong>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                
+                {% if not forloop.last %}
+                    <div class="separator"></div>
+                {% endif %}
+            {% empty %}
+                <div class="empty-state">
+                    <h3>Aucun cours à afficher</h3>
+                    <p>Il n'y a actuellement aucun cours disponible pour l'impression.</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pied de page -->
+        <div class="footer-print">
+            <p>📧 Document généré automatiquement par le système de suivi d'enseignement</p>
+            <p>🏛️ Université Nangui Abrogoua - Tous droits réservés</p>
+            <p>📅 {{ today|date:"d/m/Y H:i" }}</p>
+        </div>
     </div>
 
-    <!-- Pied de page -->
-    <div class="footer-print">
-        <p>&copy; 2025 Université Nangui Abrogoua - Tous droits réservés</p>
-    </div>
-</div>
+    <script>
+        // Amélioration de l'expérience utilisateur
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation d'entrée pour les cours
+            const coursContainers = document.querySelectorAll('.cours-container');
+            coursContainers.forEach((container, index) => {
+                container.style.opacity = '0';
+                container.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    container.style.transition = 'all 0.5s ease';
+                    container.style.opacity = '1';
+                    container.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
 
+            // Confirmation avant fermeture
+            window.addEventListener('beforeunload', function(e) {
+                if (document.querySelector('.cours-container')) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

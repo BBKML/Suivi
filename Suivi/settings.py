@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'change-this-secret-key-in-productio
 
 DEBUG = True  # Pour les tests
 
-ALLOWED_HOSTS = ['.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.onrender.com']
 # Modèle utilisateur personnalisé
 AUTH_USER_MODEL = 'Suiv.CustomUser'
 
@@ -34,7 +34,7 @@ INSTALLED_APPS = [
 # Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    #'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -64,7 +64,7 @@ TEMPLATES = [
 ]
 
 # Application WSGI
-WSGI_APPLICATION = 'Suivi.wsgi.application'  # Conservé "Suivi" comme nom du projet
+#WSGI_APPLICATION = 'Suivi.wsgi.application'  # Conservé "Suivi" comme nom du projet
 
 # Base de données (SQLite)
 DATABASES = {

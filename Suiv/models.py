@@ -12,6 +12,8 @@ from django.contrib.auth import get_user_model
 
 from django.utils import timezone
 
+import dj_database_url
+import os
 
 
 class CustomUserManager(BaseUserManager):
